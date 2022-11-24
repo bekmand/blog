@@ -1,0 +1,39 @@
+---
+layout: "@/layouts/BlogPost"
+title: "Dataverse Error: prvRead"
+publishDate: 24 November 2022
+description: Playing with AccessRights in Dataverse and you get this error.
+tags: ["power apps", "prvRead", "dataverse"]
+---
+
+import { Image } from "@astrojs/image/components";
+
+## Dataverse Error on table
+
+If you have worked with Tables in dataverse and have touched the settings you might run into this issue
+
+```
+Du har ikke tilladelse til at få vist disse data. 
+Serversvar: tablename mislykkedes: Principal user (Id=dfa3d87b-144a-ed11-bba1-6045bd8f9145, type=8, roleCount=4, privilegeCount=499, accessMode=0), 
+is missing prvReadus__tableName privilege (Id=0a48faea-248b-455e-a18f-7aa9239cb846) on OTC=10280 for entity 'table logical name' 
+(LocalizedName='table name'). context.Caller=dfa3d87b-144a-ed11-bba1-6045bd8f9145
+```
+
+## Understanding the error
+
+```
+Serversvar: tablename mislykkedes: Principal user (Id=dfa3d87b-144a-ed11-bba1-6045bd8f9145, type=8, roleCount=4, privilegeCount=499, accessMode=0), 
+```
+
+This part explains which user is having the issuee, please check the User table in Dataverse: Dataverse -> Tables -> User
+show the field "User" this should be the key that you see above.
+
+
+```
+is missing prvReadus__tableName privilege (Id=0a48faea-248b-455e-a18f-7aa9239cb846) on OTC=10280 for entity 'table logical name' 
+```
+
+This tells us which table you're missing access to. In my case it is the table "us__tableName" 
+
+Now all that is left is give the correct rights for that use to that table and the error is resolved
+
